@@ -31,13 +31,12 @@ class CardController extends Controller
                 foreach ($cl->ratings as $rating) {
                     $avg += $rating->rating;
                 }
-                if(($avg / sizeof($cl->ratings)-floor($avg / sizeof($cl->ratings))>=0.75)){
+                if(($avg / sizeof($cl->ratings)-floor($avg / sizeof($cl->ratings)) >= 0.75)){
                     $cl->rating = ceil($avg / sizeof($cl->ratings));
                     }
                     else{
                     $cl->rating = floor($avg / sizeof($cl->ratings));
                 }
-
             }
             $cl->enrolled= sizeof($cl->enrolledUsers);
         }
