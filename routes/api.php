@@ -23,8 +23,11 @@ Route::resource('/post', 'App\Http\Controllers\PostController')->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
 Route::resource('/class', 'App\Http\Controllers\CardController')->only([
-    'index', 'store', 'show', 'update', 'destroy'
+    'store', 'show', 'update', 'destroy'
 ]);
+
+Route::post('/class/getAll', [CardController::class, 'index']);
+
 Route::resource('/rating', 'App\Http\Controllers\RatingController')->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
