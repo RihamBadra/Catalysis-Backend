@@ -12,7 +12,7 @@ class UserCardController extends Controller
      */
     public function index()
     {
-        $enrolledUsers = UserCard::all();
+        $enrolledUsers = UserCard::where('user_id', auth()->user()->id)->get();
         return response()->json(['status'=>200, 'users-classes'=>$enrolledUsers]);
     }
 
