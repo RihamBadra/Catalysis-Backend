@@ -26,7 +26,7 @@ class RatingController extends Controller
         $inputs = $request->all();
         $rating = new Rating();
         $rating->rating = $inputs['rating'];
-        $rating->user_id = $inputs['user_id'];
+        $rating->user_id = auth()->user()->id;
         $rating->card_id = $inputs['card_id'];
         $rating->save();
         return response()->json(['status'=>200, 'message'=>'rating added']);

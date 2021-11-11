@@ -10,7 +10,7 @@ use Validator;
 
 class AuthController extends Controller
 {
-  
+
 
     /**
      * Get a JWT via given credentials.
@@ -45,11 +45,14 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request) {
+        $input=$request->all();
+        if($input['password']!=$input['verify_password']){
+            return response()->json(['error'=>"passwords don't match"]);
+        }
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
-            'verify_password' => 'required|string|min:6',
         ]);
 
         if($validator->fails()){
@@ -67,7 +70,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-
     /**
      * Log the user out (Invalidate the token).
      *
@@ -75,10 +77,6 @@ class AuthController extends Controller
      */
     public function logout() {
         auth()->logout();
-
         return response()->json(['message' => 'User successfully signed out']);
     }
-
-
-    
 }

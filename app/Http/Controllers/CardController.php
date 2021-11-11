@@ -12,11 +12,10 @@ class CardController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
-        $input=$request->all();
         $arr=[];
-        $cats=UserCategory::where('user_id',$input['user_id'])->get();
+        $cats=UserCategory::where('user_id',auth()->user()->id)->get();
         foreach ($cats as $cat){
             array_push($arr,$cat->category_id);
         }
@@ -54,7 +53,7 @@ class CardController extends Controller
         $class->title = $inputs['title'];
         $class->description = $inputs['description'];
         $class->overview = $inputs['overview'];
-        $class->user_id = $inputs['user_id'];
+        $class->user_id = auth()->user()->id;
         $class->category_id = $inputs['category_id'];
         $class->save();
         return response()->json(['status'=>200, 'class'=>$class]);

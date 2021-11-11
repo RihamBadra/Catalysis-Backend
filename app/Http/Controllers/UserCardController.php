@@ -24,7 +24,7 @@ class UserCardController extends Controller
     {
         $inputs = $request->all();
         $user_enrolled = new UserCard();
-        $user_enrolled->user_id = $inputs['user_id'];
+        $user_enrolled->user_id = auth()->user()->id;
         $user_enrolled->card_id = $inputs['card_id'];
         $user_enrolled->save();
         return response()->json(['status'=>200, 'message'=>'user registered to class successfully']);

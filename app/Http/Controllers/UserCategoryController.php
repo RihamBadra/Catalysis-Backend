@@ -24,10 +24,18 @@ class UserCategoryController extends Controller
     {
         $inputs = $request->all();
         $userCategory = new UserCategory();
-        $userCategory->user_id = $inputs['user_id'];
-        $userCategory->category_id = $inputs['category_id'];
+        $userCategory->user_id = auth()->user()->id;
+        $userCategory->category_id = $inputs['category_id1'];
         $userCategory->save();
-        return response()->json(['status'=>200, 'message'=>'user category added']);
+        $userCategory2 = new UserCategory();
+        $userCategory2->user_id = auth()->user()->id;
+        $userCategory2->category_id = $inputs['category_id2'];
+        $userCategory2->save();
+        $userCategory3 = new UserCategory();
+        $userCategory3->user_id = auth()->user()->id;
+        $userCategory3->category_id = $inputs['category_id3'];
+        $userCategory3->save();
+        return response()->json(['status'=>200, 'message'=>'user categories added']);
     }
 
     /**

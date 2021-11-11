@@ -18,21 +18,17 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']); 
 
 Route::group([
-    'middleware' => 'jwt.auth',
+    'middleware' => 'auth',
 ], function ($router) {
-  
+
   Route::resource('/post', 'App\Http\Controllers\PostController')->only([
     'index', 'store', 'show', 'update', 'destroy'
   ]);
   Route::resource('/class', 'App\Http\Controllers\CardController')->only([
-    'store', 'show', 'update', 'destroy'
+    'index','store', 'show', 'update', 'destroy'
   ]);
-
-  Route::post('/class/getAll', [CardController::class, 'index']);
-
   Route::resource('/rating', 'App\Http\Controllers\RatingController')->only([
     'index', 'store', 'show', 'update', 'destroy'
   ]);
@@ -45,4 +41,5 @@ Route::group([
   Route::resource('/userClass', 'App\Http\Controllers\UserCardController')->only([
     'index', 'store', 'show', 'update', 'destroy'
   ]);
+  Route::post('/logout', [AuthController::class, 'logout']);
 });

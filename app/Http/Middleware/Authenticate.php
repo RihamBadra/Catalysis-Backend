@@ -2,20 +2,29 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+//use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Exception;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+use Illuminate\Http\Request;
 
-class Authenticate extends Middleware
+class Authenticate
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
+     * @param Request $request
+     * @param Closure $next
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function redirectTo($request)
+    public function handle(Request $request, Closure $next)
     {
-        if (! $request->expectsJson()) {
-            return route('login');
+        if(auth()->check()) {
+            return $next($request)->header('Access-Control-Allow-Origin','')
+                ->header('Access-Control-Allow-Headers','');
         }
+        return response()->json([
+            'status'=>1000,
+            "message"=>'you must be logged in'
+        ]);
     }
 }
