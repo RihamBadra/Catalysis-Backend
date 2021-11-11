@@ -25,7 +25,7 @@ class PostController extends Controller
     {
         $inputs = $request->all();
         $post = new Post();
-        $post->name = $request->file('file_path')->store('card-posts');
+        $post->name = $request->file('file_path')->store('posts');
         $post->card_id = $inputs['card_id'];
         $post->save();
         return response()->json(['status'=>200, 'message'=>'post added']);

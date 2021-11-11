@@ -22,6 +22,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::group([
     'middleware' => 'auth',
 ], function ($router) {
+    Route::get('/checkToken', [AuthController::class, 'checkToken']);
 
   Route::resource('/post', 'App\Http\Controllers\PostController')->only([
     'index', 'store', 'show', 'update', 'destroy'
