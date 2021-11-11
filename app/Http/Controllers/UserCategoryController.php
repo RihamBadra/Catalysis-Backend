@@ -12,7 +12,7 @@ class UserCategoryController extends Controller
      */
     public function index()
     {
-        $userCategories = UserCategory::get();
+        $userCategories = UserCategory::where('user_id', auth()->user()->id)->get();
         return response()->json(['user_categories'=>$userCategories]);
     }
 

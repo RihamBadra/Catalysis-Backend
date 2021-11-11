@@ -12,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('users')->get();
+        $categories = Category::get();
         return response()->json(['status'=>200, 'categories'=>$categories]);
     }
 
