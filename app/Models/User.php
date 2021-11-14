@@ -61,10 +61,21 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims() {
         return [];
-    }    
+    }
+
     public function user_card()
     {
         return $this->hasMany(UserCard::class, 'user_id', 'id');
+    }
+
+    public function hidden()
+    {
+        return $this->hasMany(Hidden::class, 'user_id', 'id');
+    }
+
+    public function savedClass()
+    {
+        return $this->hasMany(Saved::class, 'user_id', 'id');
     }
 
     public function categories()

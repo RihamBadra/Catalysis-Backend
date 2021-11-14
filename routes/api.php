@@ -39,6 +39,12 @@ Route::group([
     Route::resource('/userCategory', 'App\Http\Controllers\UserCategoryController')->only([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
+    Route::resource('/saved', 'App\Http\Controllers\SavedController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
+    Route::resource('/hidden', 'App\Http\Controllers\HiddenController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
     Route::resource('/userClass', 'App\Http\Controllers\UserCardController')->only([
         'index', 'store', 'show', 'update', 'destroy'
     ]);

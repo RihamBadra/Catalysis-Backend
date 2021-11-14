@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Card;
+use App\Models\Hidden;
+use App\Models\Saved;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
 
@@ -15,12 +17,22 @@ class CardController extends Controller
     public function index()
     {
         $arr=[];
+        $arr2=[];
+        $arr3=[];
         $cats=UserCategory::where('user_id',auth()->user()->id)->get();
+        $hidden=Hidden::where('user_id',auth()->user()->id)->get();
+        $saved=Saved::where('user_id',auth()->user()->id)->get();
         foreach ($cats as $cat){
-            array_push($arr,$cat->category_id);
+            array_push($arr, $cat->category_id);
+        }
+        foreach ($hidden as $hid){
+            array_push($arr2, $hid->card_id);
+        }
+        foreach ($saved as $sv){
+            array_push($arr3, $sv->card_id);
         }
         $class = Card::with('owner', 'category', 'ratings', 'posts', 'enrolledUsers')
-            ->whereIn('category_id',$arr)->get();
+            ->whereIn('category_id',$arr)->whereNotIn('id', $arr2)->get();
         foreach ($class as $cl){
             if(sizeof($cl->ratings)==0){
                 $cl->rating=0;
@@ -39,7 +51,7 @@ class CardController extends Controller
             }
             $cl->enrolled= sizeof($cl->enrolledUsers);
         }
-        return response()->json(['status'=>200, 'class'=>$class]);
+        return response()->json(['length'=>sizeof($class), 'status'=>200, 'class'=>$class, 'saved'=>$arr3]);
     }
 
     /**
