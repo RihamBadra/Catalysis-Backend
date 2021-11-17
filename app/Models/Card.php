@@ -23,6 +23,11 @@ class Card extends Model
         return $this->hasMany(Post::class, 'card_id', 'id');
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Session::class,'card_id','id');
+    }
+
     public function enrolledUsers()
     {
         return $this->hasMany(UserCard::class, 'card_id', 'id');
@@ -41,5 +46,10 @@ class Card extends Model
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'card_id', 'id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class,'card_id','id');
     }
 }

@@ -27,10 +27,16 @@ Route::group([
     Route::resource('/post', 'App\Http\Controllers\PostController')->only([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
+    Route::resource('/video', 'App\Http\Controllers\SessionController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
     Route::resource('/class', 'App\Http\Controllers\CardController')->only([
         'index','store', 'show', 'update', 'destroy'
     ]);
     Route::resource('/rating', 'App\Http\Controllers\RatingController')->only([
+        'index', 'store', 'show', 'update', 'destroy'
+    ]);
+    Route::resource('/review', 'App\Http\Controllers\ReviewController')->only([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
     Route::resource('/category', 'App\Http\Controllers\CategoryController')->only([

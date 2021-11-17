@@ -31,7 +31,7 @@ class CardController extends Controller
         foreach ($saved as $sv){
             array_push($arr3, $sv->card_id);
         }
-        $class = Card::with('owner', 'category', 'ratings', 'posts', 'enrolledUsers')
+        $class = Card::with('owner', 'category', 'ratings', 'reviews', 'posts', 'videos', 'enrolledUsers')
             ->whereIn('category_id',$arr)->whereNotIn('id', $arr2)->get();
         foreach ($class as $cl){
             if(sizeof($cl->ratings)==0){
