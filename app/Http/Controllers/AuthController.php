@@ -81,6 +81,13 @@ class AuthController extends Controller
     }
 
     public function checkToken(){
-        return response()->json(['status' => 200]);
+        return response()->json(['status' => 200, "user"=>auth()->user()]);
+    }
+
+    public function setProfile(Request $req){
+        $user = User::where("id", auth()->user()->id)->first();
+        $user->profile = $req->file('profile')->store('profile');
+        $user->save();
+        return response()->json(['status'=>200, 'message'=>'Profile photo updated!']);
     }
 }

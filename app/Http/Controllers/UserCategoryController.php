@@ -12,8 +12,8 @@ class UserCategoryController extends Controller
      */
     public function index()
     {
-        $userCategories = UserCategory::where('user_id', auth()->user()->id)->get();
-        return response()->json(['user_categories'=>$userCategories]);
+        $userCategories = UserCategory::with('category')->where('user_id', auth()->user()->id)->get();
+        return response()->json(['cat'=>$userCategories]);
     }
 
     /**
@@ -50,15 +50,31 @@ class UserCategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UserCategory  $userCategory
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param UserCategory $userCategory
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, UserCategory $userCategory)
+    public function update(Request $request, $id)
     {
-        //
+        $inputs = $request->all();
+        $cat= UserCategory::with('category')->where('user_id', $id)->get();
+        if($inputs["category1"]){
+            dd($inputs["category1"]);
+        }
+
+//        if($cat) {
+//            $cat->category_id = $inputs['category_id'];
+//            $cat->save();
+//            return response()->json([
+//                'status' => '200',
+//                'category' => $cat,
+//                'message' => 'Category updated'
+//            ]);
+//        }
+//        return response()->json([
+//            'status' => '200',
+//            'message' => 'Category not found'
+//        ]);
     }
 
     /**

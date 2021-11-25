@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
 use App\Models\Saved;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,31 @@ class SavedController extends Controller
      */
     public function index()
     {
+        $arr=[];
+        $saved=Saved::where('user_id',auth()->user()->id)->get();;
+        foreach ($saved as $sv){
+            array_push($arr, $sv->card_id);
+        }
+        $class = Card::with('owner', 'category', 'ratings.user', 'reviews.user', 'posts', 'videos', 'enrolledUsers')->whereIn('id',$arr)->orderBy('created_at', 'DESC')->get();
+        foreach ($class as $cl){
+            if(sizeof($cl->ratings)==0){
+                $cl->rating=0;
+            }
+            else {
+                $avg = 0;
+                foreach ($cl->ratings as $rating) {
+                    $avg += $rating->rating;
+                }
+                if(($avg / sizeof($cl->ratings)-floor($avg / sizeof($cl->ratings)) >= 0.75)){
+                    $cl->rating = ceil($avg / sizeof($cl->ratings));
+                }
+                else{
+                    $cl->rating = floor($avg / sizeof($cl->ratings));
+                }
+            }
+            $cl->enrolled= sizeof($cl->enrolledUsers);
+        }
+        return response()->json(["status"=>'200', "saved"=>$class]);
     }
 
     /**

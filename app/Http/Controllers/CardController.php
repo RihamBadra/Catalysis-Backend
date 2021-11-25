@@ -31,8 +31,8 @@ class CardController extends Controller
         foreach ($saved as $sv){
             array_push($arr3, $sv->card_id);
         }
-        $class = Card::with('owner', 'category', 'ratings', 'reviews', 'posts', 'videos', 'enrolledUsers')
-            ->whereIn('category_id',$arr)->whereNotIn('id', $arr2)->get();
+        $class = Card::with('owner', 'category', 'ratings.user', 'reviews.user', 'posts', 'videos', 'enrolledUsers')
+            ->whereIn('category_id',$arr)->whereNotIn('id', $arr2)->orderBy('created_at', 'DESC')->get();
         foreach ($class as $cl){
             if(sizeof($cl->ratings)==0){
                 $cl->rating=0;
@@ -75,9 +75,27 @@ class CardController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show()
     {
-        $class =  Card::with('user', 'category')->where("category_id", $id)->get();
+        $class = Card::with('owner', 'category', 'ratings.user', 'reviews.user', 'posts', 'videos', 'enrolledUsers')->where("user_id", auth()->user()->id)->get();
+        foreach ($class as $cl){
+            if(sizeof($cl->ratings)==0){
+                $cl->rating=0;
+            }
+            else {
+                $avg = 0;
+                foreach ($cl->ratings as $rating) {
+                    $avg += $rating->rating;
+                }
+                if(($avg / sizeof($cl->ratings)-floor($avg / sizeof($cl->ratings)) >= 0.75)){
+                    $cl->rating = ceil($avg / sizeof($cl->ratings));
+                }
+                else{
+                    $cl->rating = floor($avg / sizeof($cl->ratings));
+                }
+            }
+            $cl->enrolled= sizeof($cl->enrolledUsers);
+        }
         return response()->json(['status'=>200, 'class'=>$class]);
     }
 

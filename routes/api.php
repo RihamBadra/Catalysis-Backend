@@ -4,6 +4,7 @@ use App\Http\Controllers\CardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ Route::group([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
     Route::resource('/class', 'App\Http\Controllers\CardController')->only([
-        'index','store', 'show', 'update', 'destroy'
+        'index', 'store', 'update', 'destroy'
     ]);
     Route::resource('/rating', 'App\Http\Controllers\RatingController')->only([
         'index', 'store', 'show', 'update', 'destroy'
@@ -52,7 +53,11 @@ Route::group([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
     Route::resource('/userClass', 'App\Http\Controllers\UserCardController')->only([
-        'index', 'store', 'show', 'update', 'destroy'
+        'index', 'store', 'show', 'destroy'
     ]);
+    Route::get('/OwnerClass', [CardController::class, 'show']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/setProf', [AuthController::class, 'setProfile']);
 });
+
+Route::put('/updateCat/{id}', [UserCategoryController::class, 'update']);
